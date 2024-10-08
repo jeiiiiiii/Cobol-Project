@@ -1,0 +1,189 @@
+     1	      IDENTIFICATION DIVISION.							12FEB24 12:50:13  PAGE	  1
+     2	      PROGRAM-ID. HANDS-ON-FINALS.
+     3	     *AUTHOR. IT22N JEI MOND.
+     4	     *INSTALLATION. PUP-MANILA.
+     5	     *DATE-WRITTEN. 02/12/24.
+     6	     *DATE-COMPILED. 02/12/24.
+     7	     *SECURITY. ONLY ME.
+     8	     *REMARKS. HANDS-ON.
+     9	      ENVIRONMENT DIVISION.
+    10	      CONFIGURATION SECTION.
+    11	      SOURCE-COMPUTER. LAPTOP-GUPS4DA8.
+    12	      OBJECT-COMPUTER. LAPTOP-GUPS4DA8.
+    13	      INPUT-OUTPUT SECTION.
+    14	      FILE-CONTROL.
+    15             SELECT OUTFILE ASSIGN TO "MONDEJAR".
+    16	      DATA DIVISION.
+    17	      FILE SECTION.
+    18	      FD   OUTFILE
+    19		   LABEL RECORD IS OMITTED
+    20		   DATA RECORD IS OUTREC.
+    21	      01   OUTREC.
+    22		   02 D-ANO PIC X(10).
+    23		   02 D-CNA PIC X(25).
+    24		   02 D-KWH PIC ZZ9.
+    25		   02 D-TAB PIC ZZZ,ZZ9.99.
+    26	      WORKING-STORAGE SECTION.
+    27	      01   EOFSW PIC 9 VALUE 0.
+    28	      01   ENO PIC X VALUE SPACES.
+    29	      01   ANO PIC X(10) VALUE SPACES.
+    30	      01   CNA PIC X(25) VALUE SPACES.
+    31	      01   PRR PIC 999 VALUE 0.
+    32	      01   CRR PIC 999 VALUE 0.
+    33	      01   KWH PIC 999 VALUE 0.
+    34	      01   SVKWH PIC ZZ9.
+    35	      01   ACC PIC A VALUE SPACES.
+    36	      01   ATY PIC X(12).
+    37	      01   ELB PIC 9(6)V99 VALUE 0.
+    38	      01   SVELB PIC ZZZ,ZZ9V99.
+    39	      01   SCH PIC 9(5)V99 VALUE 0.
+    40	      01   SVSCH PIC ZZ,ZZ9V99.
+    41	      01   TAB PIC 9(6)V99 VALUE 0.
+    42	      01   SVTAB PIC ZZZ,ZZ9V99.
+    43	      01   PRC PIC 99V99 VALUE 0.
+    44	      SCREEN SECTION.
+    45	      01   SCRE.
+    46		   02 BLANK SCREEN.
+    47	      PROCEDURE DIVISION.
+    48	      MAIN-RTN.
+    49		   OPEN OUTPUT OUTFILE.
+    50		   PERFORM PROCESS-RTN THRU PROCESS-RTN-END UNTIL EOFSW = 1.
+    51		   PERFORM FINISH-RTN.
+    52		   STOP RUN.
+    53	      PROCESS-RTN.
+    54		   DISPLAY SCRE.
+    55		   MOVE 0 TO KWH.
+    56		   MOVE SPACES TO ACC.
+    57		   MOVE 0 TO ELB.
+    58		   MOVE 0 TO SCH.
+    59		   MOVE 0 TO TAB.
+    60		   MOVE SPACES TO ENO.    61             DISPLAY "BROWNOUT ELECTRIC COMPANY" LINE 1 COLUMN 19.                12FEB24 12:50:13  PAGE    2
+    62             DISPLAY "BILLING REPORT" LINE 2 COLUMN 25.
+    63
+    64             DISPLAY "ACCOUNT NUMBER:" LINE 5 COLUMN 1.
+    65		   ACCEPT ANO LINE 5 COLUMN 35.
+    66
+    67             DISPLAY "CUSTOMER NAME:" LINE 6 COLUMN 1.
+    68		   ACCEPT CNA LINE 6 COLUMN 35.
+    69
+    70             DISPLAY "PREVIOUS READING:" LINE 7 COLUMN 1.
+    71		   ACCEPT PRR LINE 7 COLUMN 35.
+    72
+    73             DISPLAY "CURRENT READING:" LINE 8 COLUMN 1.
+    74		   ACCEPT CRR LINE 8 COLUMN 35.
+    75
+    76		   PERFORM KWH-RTN.
+    77
+    78		   PERFORM ACC-RTN UNTIL
+    79             ACC = 'R' OR ACC = 'r' OR
+    80             ACC = 'C' OR ACC = 'c' OR
+    81             ACC = 'I' OR ACC = 'i'.
+    82             DISPLAY "ACCOUNT TYPE:" LINE 11 COLUMN 1.
+    83		   DISPLAY ATY LINE 11 COLUMN 35.
+    84
+    85             DISPLAY "ELECTRIC BILL:" LINE 12 COLUMN 1.
+    86		   DISPLAY SVELB LINE 12 COLUMN 35.
+    87
+    88             DISPLAY "SYSTEM CHARGES:" LINE 13 COLUMN 1.
+    89		   DISPLAY SVSCH LINE 13 COLUMN 35.
+    90
+    91		   COMPUTE TAB = ELB + SCH.
+    92		   MOVE TAB TO SVTAB.
+    93             DISPLAY "TOTAL BILL:" LINE 14 COLUMN 1.
+    94		   DISPLAY SVTAB LINE 14 COLUMN 35.
+    95
+    96		   MOVE ANO TO D-ANO.
+    97		   MOVE CNA TO D-CNA.
+    98		   MOVE KWH TO D-KWH.
+    99		   MOVE TAB TO D-TAB.
+   100		   WRITE OUTREC.
+   101
+   102             PERFORM ANOTHER-RTN UNTIL ENO = 'y' OR ENO = 'Y'
+   103             OR ENO = 'n' OR ENO = 'N'.
+   104	      PROCESS-RTN-END.
+   105	      KWH-RTN.
+   106		   COMPUTE KWH = CRR - PRR.
+   107             DISPLAY "KWH USED:" LINE 9 COLUMN 1.
+   108		   MOVE KWH TO SVKWH.
+   109		   DISPLAY SVKWH LINE 9 COLUMN 35.
+   110	      ACC-RTN.
+   111             DISPLAY "ACCOUNT CODE:" LINE 10 COLUMN 1.
+   112		   ACCEPT ACC LINE 10 COLUMN 35.
+   113             IF ACC = 'r' OR 'R'
+   114                  MOVE "RESIDENTIAL" TO ATY
+   115			MOVE 15.00 TO PRC
+   116			COMPUTE ELB = KWH * PRC
+   117			COMPUTE SCH = ELB * 0.03.
+   118             IF ACC = 'c' OR 'C'
+   119                  MOVE "COMMERCIAL" TO ATY
+   120			MOVE 30.00 TO PRC   121			COMPUTE ELB = KWH * PRC 					12FEB24 12:50:13  PAGE	  3
+   122			COMPUTE SCH = ELB * 0.06.
+   123             IF ACC = 'i' OR 'I'
+   124                  MOVE "INDUSTRIAL" TO ATY
+   125			MOVE 45.00 TO PRC
+   126			COMPUTE ELB = KWH * PRC
+   127			COMPUTE SCH = ELB * 0.09.
+   128		   MOVE ELB TO SVELB.
+   129		   MOVE SCH TO SVSCH.
+   130	      ANOTHER-RTN.
+   131             DISPLAY "INPUT ANOTHER RECORD (Y/N)?"
+   132		   LINE 16 COLUMN 1.
+   133		   ACCEPT ENO LINE 16 COLUMN 35.
+   134             IF ENO = 'N' OR ENO = 'n' MOVE 1 TO EOFSW.
+   135	      FINISH-RTN.
+   136		   CLOSE OUTFILE.
+   137Realia COBOL Version 4.000   SN: 01-07732  C:BROW.COB					12FEB24 12:50:13  PAGE	  4
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        0B65	 HANDS$ON$FINALS$C00
+			  D00	     06        0353	 HANDS$ON$FINALS$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     137
+			Compilation time (mm:ss.hh):  0:02.30
+			Compilation speed (lines/minute):  3573
+
+			Compilation date (yy/mm/dd): 24/02/12
+			     Time of day (hh:mm:ss): 12:50:14
+
+			Source length in LST file:000005143

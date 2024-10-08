@@ -1,0 +1,183 @@
+     1	      IDENTIFICATION DIVISION.							03FEB24 15:46:43  PAGE	  1
+     2	      PROGRAM-ID.  ARRAYS.
+     3	      ENVIRONMENT DIVISION.
+     4	      CONFIGURATION SECTION.
+     5	      SOURCE-COMPUTER.	IBM.
+     6	      OBJECT-COMPUTER.	IBM.
+     7	      INPUT-OUTPUT SECTION.
+     8	      FILE-CONTROL.
+     9            SELECT STUDENT  ASSIGN TO 'QUIZ1'.
+    10            SELECT OUTFILE  ASSIGN TO 'jeiren1'.
+    11
+    12	      DATA     DIVISION.
+    13	      FILE     SECTION.
+    14	      FD  STUDENT
+    15		  LABEL RECORD IS STANDARD
+    16		  DATA RECORD IS INREC.
+    17	      01 INREC.
+    18		  02 SNO PIC 9(5).
+    19		  02 SNA  PIC X(25).
+    20		  02 QUIZ OCCURS 5 TIMES PIC 99.
+    21	      FD  OUTFILE
+    22		  LABEL RECORD IS STANDARD
+    23		  DATA RECORD IS OUTREC.
+    24	      01  OUTREC.
+    25		  02 FILLER PIC X(80).
+    26	      WORKING-STORAGE SECTION.
+    27	      01  EOFSW PIC 9 VALUE 0.
+    28	      01  TQ PIC 9999 VALUE 0.
+    29	      01  prt-AVE PIC 99.99 VALUE ZEROS.
+    30	      01  I PIC 9 VALUE 0.
+    31	      01  HEADER-1.
+    32		  02 FILLER PIC X(29) VALUE SPACES.
+    33            02 FILLER PIC X(22) VALUE "POLYTECHNIC UNIVERSITY".
+    34		  02 FILLER PIC X(29) VALUE SPACES.
+    35
+    36	      01  HEADER-2.
+    37		  02 FILLER PIC X(31) VALUE SPACES.
+    38            02 FILLER PIC X(18) VALUE "OF THE PHILIPPINES".
+    39		  02 FILLER PIC X(31) VALUE SPACES.
+    40
+    41	      01  HEADER-3.
+    42		  02 FILLER PIC X(30) VALUE SPACES.
+    43            02 FILLER PIC X(19) VALUE "COLLEGE OF COMPUTER".
+    44		  02 FILLER PIC X(31) VALUE SPACES.
+    45
+    46	      01  HEADER-4.
+    47		  02 FILLER PIC X(28) VALUE SPACES.
+    48            02 FILLER PIC X(24) VALUE "AND INFORMATION SCIENCES".
+    49		  02 FILLER PIC X(28) VALUE SPACES.
+    50
+    51	      01  COL-1.
+    52		  02 FILLER PIC X(7) VALUE SPACES.
+    53            02 FILLER PIC X(7) VALUE "STUDENT".
+    54		  02 FILLER PIC X(4) VALUE SPACES.
+    55            02 FILLER PIC X(7) VALUE "STUDENT".
+    56		  02 FILLER PIC X(4) VALUE SPACES.
+    57            02 FILLER PIC X(4) VALUE "QUIZ".
+    58		  02 FILLER PIC X(4) VALUE SPACES.
+    59            02 FILLER PIC X(4) VALUE "QUIZ".
+    60		  02 FILLER PIC X(4) VALUE SPACES.    61            02 FILLER PIC X(4) VALUE "QUIZ".                                      03FEB24 15:46:43  PAGE    2
+    62		  02 FILLER PIC X(4) VALUE SPACES.
+    63            02 FILLER PIC X(4) VALUE "QUIZ".
+    64		  02 FILLER PIC X(4) VALUE SPACES.
+    65            02 FILLER PIC X(4) VALUE "QUIZ".
+    66		  02 FILLER PIC X(4) VALUE SPACES.
+    67            02 FILLER PIC X(7) VALUE "AVERAGE".
+    68		  02 FILLER PIC X(4) VALUE SPACES.
+    69
+    70	      01  COL-2.
+    71		  02 FILLER PIC X(8) VALUE SPACES.
+    72            02 FILLER PIC X(6) VALUE "NUMBER".
+    73		  02 FILLER PIC X(4) VALUE SPACES.
+    74            02 FILLER PIC X(4) VALUE "NAME".
+    75		  02 FILLER PIC X(7) VALUE SPACES.
+    76            02 FILLER PIC X(1) VALUE "1".
+    77		  02 FILLER PIC X(6) VALUE SPACES.
+    78            02 FILLER PIC X(1) VALUE "2".
+    79		  02 FILLER PIC X(6) VALUE SPACES.
+    80            02 FILLER PIC X(1) VALUE "3".
+    81		  02 FILLER PIC X(7) VALUE SPACES.
+    82            02 FILLER PIC X(1) VALUE "4".
+    83		  02 FILLER PIC X(7) VALUE SPACES.
+    84            02 FILLER PIC X(1) VALUE "5".
+    85		  02 FILLER PIC X(20) VALUE SPACES.
+    86
+    87	      01  DETALYE.
+    88		  02 FILLER PIC X(2) VALUE SPACES.
+    89		  02 P-SNO PIC 9(5).
+    90		  02 FILLER PIC X(2) VALUE SPACES.
+    91		  02 P-SNA   PIC X(25).
+    92		  02 FILLER PIC X(2) VALUE SPACES.
+    93		  02 PRT-Q  OCCURS 5 TIMES .
+    94		    03	  PRT-QUIZ PIC 99 .
+    95		    03	  FILLER PIC X(5).
+    96		  02 FILLER PIC X(2) VALUE SPACES.
+    97		  02 AVE PIC 99.99.
+    98
+    99	      SCREEN SECTION.
+   100	      01 SCRE.
+   101		  02 BLANK SCREEN.
+   102
+   103	      PROCEDURE DIVISION.
+   104	      MAIN-RTN.
+   105		  PERFORM INIT-RTN.
+   106		  PERFORM CCMIT-RTN UNTIL EOFSW = 1.
+   107		  PERFORM FINISH-RTN.
+   108		  STOP RUN.
+   109	      INIT-RTN.
+   110		  OPEN INPUT STUDENT, OUTPUT OUTFILE.
+   111		  WRITE OUTREC FROM HEADER-1 AFTER PAGE.
+   112		  WRITE OUTREC FROM HEADER-2 AFTER ADVANCING 1 LINE.
+   113		  WRITE OUTREC FROM HEADER-3 AFTER ADVANCING 1 LINE.
+   114		  WRITE OUTREC FROM HEADER-4 AFTER ADVANCING 1 LINE.
+   115		  WRITE OUTREC FROM COL-1 AFTER 2.
+   116		  WRITE OUTREC FROM COL-2 AFTER 1.
+   117	      CCMIT-RTN.
+   118		  DISPLAY SCRE
+   119		  READ STUDENT AT END  MOVE 1 TO EOFSW PERFORM CCMIT-RTN-END.
+   120		  MOVE SNO TO P-SNO.   121		  MOVE SNA TO P-SNA.							03FEB24 15:46:43  PAGE	  3
+   122		  PERFORM BSIT-RTN VARYING I FROM 1 BY 1 UNTIL I > 5.
+   123		  COMPUTE AVE = TQ / 5.
+   124		  WRITE OUTREC FROM DETALYE AFTER 1 LINE.
+   125	      CCMIT-RTN-END.
+   126	      BSIT-RTN.
+   127		  MOVE QUIZ (I) TO PRT-QUIZ (I).
+   128		  ADD QUIZ (I) TO TQ.
+   129	      FINISH-RTN.
+   130		  CLOSE STUDENT, OUTFILE.
+   131            DISPLAY "INPUT ""TYPE ARROUTPUT""" LINE 10 COLUMN 20.Realia COBOL Version 4.000   SN: 01-07732  C:SAMCOBS.COB				03FEB24 15:46:43  PAGE	  4
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        033F	 ARRAYS$C00
+			  D00	     06        04B8	 ARRAYS$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     131
+			Compilation time (mm:ss.hh):  0:01.98
+			Compilation speed (lines/minute):  3969
+
+			Compilation date (yy/mm/dd): 24/02/03
+			     Time of day (hh:mm:ss): 15:46:43
+
+			Source length in LST file:000005214

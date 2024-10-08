@@ -1,0 +1,176 @@
+     1	      IDENTIFICATION DIVISION.							03FEB24 15:41:11  PAGE	  1
+     2	      PROGRAM-ID. friends.
+     3	     *AUTHOR. JEI.
+     4	     *INSTALLATION. TAYTAY.
+     5	     *DATE-WRITTEN. 01-26-2024.
+     6	     *DATE-COMPILED. 01-26-2024.
+     7	     *SECURITY. US ONLY.
+     8	     *REMARKS first cobol.
+     9
+    10	      ENVIRONMENT DIVISION.
+    11	      CONFIGURATION SECTION.
+    12	      SOURCE-COMPUTER. GIGABYTE.
+    13	      OBJECT-COMPUTER. GIGABYTE.
+    14	      INPUT-OUTPUT SECTION.
+    15	      FILE-CONTROL.
+    16            SELECT INFILE ASSIGN TO "QUIZ.txt".
+    17            SELECT OUTFILE ASSIGN TO "results".
+    18	      DATA DIVISION.
+    19	      FILE SECTION.
+    20	      FD  INFILE
+    21		  LABEL RECORD IS STANDARD
+    22		  DATA RECORD IS INREC.
+    23	      01  INREC.
+    24		  02 SNO PIC 9(5).
+    25		  02 SNA PIC X(25).
+    26		  02 QUIZ OCCURS 5 TIMES PIC 99.
+    27	      FD  OUTFILE
+    28		  LABEL RECORD IS OMITTED
+    29		  DATA RECORD IS OUTREC.
+    30	      01  OUTREC.
+    31		  02 FILLER PIC X(80).
+    32	      WORKING-STORAGE SECTION.
+    33	      01  I PIC 9 VALUE ZERO.
+    34	      01  EOFSW PIC 9 VALUE ZERO.
+    35	      01  TQ PIC 9 VALUE ZERO.
+    36	      01  PRT-AVG PIC 99.99 VALUE ZERO.
+    37	      01  HEAD-1.
+    38		  02 FILLER PIC X(38) VALUE SPACES.
+    39            02 FILLER PIC X(3) VALUE "PUP".
+    40		  02 FILLER PIC X(39) VALUE SPACES.
+    41	      01  HEAD-2.
+    42		  02 FILLER PIC X(38) VALUE SPACES.
+    43            02 FILLER PIC X(4) VALUE "CCIS".
+    44		  02 FILLER PIC X(38) VALUE SPACES.
+    45	      01  SUB-1.
+    46		  02 FILLER PIC X(7) VALUE SPACES.
+    47            02 FILLER PIC X(7) VALUE "STUDENT".
+    48		  02 FILLER PIC X(4) VALUE SPACES.
+    49            02 FILLER PIC X(7) VALUE "STUDENT".
+    50		  02 FILLER PIC X(4) VALUE SPACES.
+    51            02 FILLER PIC X(4) VALUE "QUIZ".
+    52		  02 FILLER PIC X(4) VALUE SPACES.
+    53            02 FILLER PIC X(4) VALUE "QUIZ".
+    54		  02 FILLER PIC X(4) VALUE SPACES.
+    55            02 FILLER PIC X(4) VALUE "QUIZ".
+    56		  02 FILLER PIC X(4) VALUE SPACES.
+    57            02 FILLER PIC X(4) VALUE "QUIZ".
+    58		  02 FILLER PIC X(4) VALUE SPACES.
+    59            02 FILLER PIC X(4) VALUE "QUIZ".
+    60		  02 FILLER PIC X(4) VALUE SPACES.    61            02 FILLER PIC X(7) VALUE "AVERAGE".                                   03FEB24 15:41:11  PAGE    2
+    62		  02 FILLER PIC X(4) VALUE SPACES.
+    63	      01  SUB-2.
+    64		  02 FILLER PIC X(8) VALUE SPACES.
+    65            02 FILLER PIC X(6) VALUE "NUMBER".
+    66		  02 FILLER PIC X(4) VALUE SPACES.
+    67            02 FILLER PIC X(4) VALUE "NAME".
+    68		  02 FILLER PIC X(7) VALUE SPACES.
+    69            02 FILLER PIC X(1) VALUE "1".
+    70		  02 FILLER PIC X(6) VALUE SPACES.
+    71            02 FILLER PIC X(1) VALUE "2".
+    72		  02 FILLER PIC X(6) VALUE SPACES.
+    73            02 FILLER PIC X(1) VALUE "3".
+    74		  02 FILLER PIC X(7) VALUE SPACES.
+    75            02 FILLER PIC X(1) VALUE "4".
+    76		  02 FILLER PIC X(7) VALUE SPACES.
+    77            02 FILLER PIC X(1) VALUE "5".
+    78		  02 FILLER PIC X(20) VALUE SPACES.
+    79	      01  DETALYE.
+    80		  02 FILLER PIC X(2) VALUE SPACES.
+    81		  02 P-SNO PIC 9(5).
+    82		  02 FILLER PIC X(2) VALUE SPACES.
+    83		  02 P-SNA   PIC X(25).
+    84		  02 FILLER PIC X(2) VALUE SPACES.
+    85		  02 PRT-Q  OCCURS 5 TIMES.
+    86		    03	  PRT-QUIZ PIC 99.
+    87		    03	  FILLER PIC X(5).
+    88		  02 FILLER PIC X(2) VALUE SPACES.
+    89		  02 AVE PIC 9(2)V99 VALUE ZERO.
+    90	      SCREEN SECTION.
+    91	      01  SCRE.
+    92		  02 BLANK SCREEN.
+    93	      PROCEDURE DIVISION.
+    94	      MAIN-RTN.
+    95		  PERFORM INIT-RTN.
+    96		  PERFORM CCMIT-RTN THRU CCMIT-RTN-END UNTIL EOFSW = 1.
+    97		  PERFORM FINISH-RTN.
+    98		  STOP RUN.
+    99	      INIT-RTN.
+   100		  OPEN INPUT INFILE, OUTPUT OUTFILE.
+   101		  READ INFILE AT END PERFORM FINISH-RTN
+   102		  WRITE OUTREC FROM HEAD-1 AFTER PAGE.
+   103		  WRITE OUTREC FROM HEAD-2 AFTER 1.
+   104		  WRITE OUTREC FROM SUB-1 AFTER 2.
+   105		  WRITE OUTREC FROM SUB-2 AFTER 3.
+   106	      CCMIT-RTN.
+   107		  DISPLAY SCRE
+   108		  READ INFILE AT END  MOVE 1 TO EOFSW PERFORM CCMIT-RTN-END.
+   109		  MOVE SNO TO P-SNO.
+   110		  MOVE SNA TO P-SNA.
+   111		  PERFORM BSIT-RTN VARYING I FROM 1 BY 1 UNTIL I > 5.
+   112		  COMPUTE AVE = TQ / 5.
+   113		  WRITE OUTREC FROM DETALYE AFTER 1 LINE.
+   114	      CCMIT-RTN-END.
+   115	      BSIT-RTN.
+   116		  MOVE QUIZ (I) TO PRT-QUIZ (I).
+   117		  ADD QUIZ (I) TO TQ.
+   118	      FINISH-RTN.
+   119		  CLOSE INFILE, OUTFILE.
+   120            DISPLAY "WE love ma'am alet" LINE 10 COLUMN 20.   121											03FEB24 15:41:11  PAGE	  3
+   122
+   123
+   124Realia COBOL Version 4.000   SN: 01-07732  C:FINAL.COB					03FEB24 15:41:11  PAGE	  4
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        02FD	 FRIENDS$C00
+			  D00	     06        040C	 FRIENDS$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     124
+			Compilation time (mm:ss.hh):  0:01.43
+			Compilation speed (lines/minute):  5202
+
+			Compilation date (yy/mm/dd): 24/02/03
+			     Time of day (hh:mm:ss): 15:41:11
+
+			Source length in LST file:000004912

@@ -1,0 +1,139 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.  ARRAYS.
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. LAPTOP.
+       OBJECT-COMPUTER. LAPTOP.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+            SELECT INFILE ASSIGN TO "scores.TXT".
+            SELECT OUTFILE ASSIGN TO "average".
+       DATA DIVISION.
+       FILE SECTION.
+       FD   INFILE
+            LABEL RECORD IS STANDARD
+            RECORD CONTAINS 33 CHARACTERS
+            DATA RECORD IS INREC.
+       01   INREC.
+            02 SNO PIC 9(5).
+            02 SNA PIC X(25).
+            02 QUIZ.
+                 03 QCODE PIC 9.
+                 03 SCORE PIC 99.
+       FD   OUTFILE
+            LABEL RECORD IS OMITTED
+            DATA RECORD IS OUTREC.
+       01   OUTREC.
+            02 FILLER PIC X(80).
+       WORKING-STORAGE SECTION.
+       01   EOFSW PIC 9 VALUE ZERO.
+       01   SVSNO PIC 9(5) VALUE ZERO.
+       01   SVSNA PIC X(25) VALUE SPACES.
+       01   I PIC 9(2) VALUE ZERO.
+       01   TOTALQ PIC 9(3) VALUE ZERO.
+       01   AVE PIC 99V99 VALUE ZERO.
+       01   WS-TABLE.
+            02 QC OCCURS 5 TIMES.
+                 03 C PIC 9 VALUE ZERO.
+                 03 S PIC 99 VALUE ZERO.
+       01  HEAD-1.
+           02 FILLER PIC X(38) VALUE SPACES.
+           02 FILLER PIC X(3) VALUE "PUP". 
+           02 FILLER PIC X(39) VALUE SPACES.
+       01  HEAD-2.
+           02 FILLER PIC X(38) VALUE SPACES.
+           02 FILLER PIC X(4) VALUE "CCIS".
+           02 FILLER PIC X(38) VALUE SPACES.
+       01  SUB-1.
+           02 FILLER PIC X(1) VALUE SPACES.
+           02 FILLER PIC X(7) VALUE "STUDENT".
+           02 FILLER PIC X(3) VALUE SPACES.
+           02 FILLER PIC X(7) VALUE "STUDENT".
+           02 FILLER PIC X(19) VALUE SPACES.
+           02 FILLER PIC X(4) VALUE "QUIZ".
+           02 FILLER PIC X(3) VALUE SPACES.  
+           02 FILLER PIC X(4) VALUE "QUIZ".
+           02 FILLER PIC X(3) VALUE SPACES.  
+           02 FILLER PIC X(4) VALUE "QUIZ".
+           02 FILLER PIC X(3) VALUE SPACES.  
+           02 FILLER PIC X(4) VALUE "QUIZ".
+           02 FILLER PIC X(3) VALUE SPACES.  
+           02 FILLER PIC X(4) VALUE "QUIZ".
+           02 FILLER PIC X(3) VALUE SPACES.  
+           02 FILLER PIC X(7) VALUE "AVERAGE".
+           02 FILLER PIC X(1) VALUE SPACES.
+       01  SUB-2.
+           02 FILLER PIC X(1) VALUE SPACES.
+           02 FILLER PIC X(6) VALUE "NUMBER".
+           02 FILLER PIC X(4) VALUE SPACES.
+           02 FILLER PIC X(4) VALUE "NAME".
+           02 FILLER PIC X(22) VALUE SPACES.
+           02 FILLER PIC X(1) VALUE "1".
+           02 FILLER PIC X(6) VALUE SPACES.  
+           02 FILLER PIC X(1) VALUE "2".
+           02 FILLER PIC X(6) VALUE SPACES.  
+           02 FILLER PIC X(1) VALUE "3".
+           02 FILLER PIC X(6) VALUE SPACES.  
+           02 FILLER PIC X(1) VALUE "4".
+           02 FILLER PIC X(6) VALUE SPACES.  
+           02 FILLER PIC X(1) VALUE "5".
+           02 FILLER PIC X(14) VALUE SPACES.   
+       01  DETALYE.
+           02 FILLER PIC X(1) VALUE SPACES.
+           02 P-SVSNO PIC 9(5).
+           02 FILLER PIC X(5) VALUE SPACES.
+           02 P-SVSNA PIC X(25).
+           02 FILLER PIC X(1) VALUE SPACES.
+           02 PRT-Q OCCURS 5 TIMES.
+                 03 PRT-QUIZ PIC 99.
+                 03 FILLER PIC X(5).
+           02 FILLER PIC X(1) VALUE SPACES.
+           02 P-AVE PIC 99.99.
+           02 FILLER PIC X(6) VALUE SPACES.
+       SCREEN SECTION.
+       01  SCRE.
+           02 BLANK SCREEN.
+       PROCEDURE DIVISION.
+       MAIN-RTN.
+            PERFORM INIT-RTN THRU INIT-RTN-END.
+            PERFORM PROCESS-RTN THRU PROCESS-RTN-END UNTIL EOFSW = 1.
+            PERFORM FINISH-RTN.
+            STOP RUN.
+       INIT-RTN.
+            OPEN INPUT INFILE, OUTPUT OUTFILE.
+            READ INFILE AT END PERFORM END-RTN GO TO INIT-RTN-END.
+            MOVE SNO TO SVSNO.
+            MOVE SNA TO SVSNA.
+            PERFORM HEADING-RTN.
+       INIT-RTN-END.
+       END-RTN.
+            MOVE 1 TO EOFSW.
+            DISPLAY "EMPTY FILE" LINE 3 COLUMN 20.
+       HEADING-RTN.
+            WRITE OUTREC FROM HEAD-1 AFTER PAGE.
+            WRITE OUTREC FROM HEAD-2 AFTER 2.
+            WRITE OUTREC FROM SUB-1 AFTER 3.
+            WRITE OUTREC FROM SUB-2 AFTER 1.
+       PROCESS-RTN.
+            DISPLAY SCRE.
+            IF SVSNO NOT = SNO OR SVSNA NOT = SNA PERFORM BREAK-RTN.
+            MOVE QUIZ TO QC(QCODE).
+            READ INFILE AT END MOVE 1 TO EOFSW PERFORM BREAK-RTN.
+       PROCESS-RTN-END.
+       BREAK-RTN.
+            PERFORM COMPUTE-RTN VARYING I FROM 1 BY 1 UNTIL I > 5.
+            COMPUTE AVE = TOTALQ / 5.
+            MOVE SVSNO TO P-SVSNO.
+            MOVE SVSNA TO P-SVSNA.
+            MOVE AVE TO P-AVE.
+            WRITE OUTREC FROM DETALYE AFTER 1.
+            MOVE ZERO TO AVE, TOTALQ.
+            MOVE SNO TO SVSNO.
+            MOVE SNA TO SVSNA.
+       COMPUTE-RTN.
+            ADD S(I) TO TOTALQ.
+            MOVE S(I) TO PRT-QUIZ(I).
+       FINISH-RTN.
+            CLOSE INFILE, OUTFILE.
+            DISPLAY "DR. Fabregas is great" LINE 3 COLUMN 20.

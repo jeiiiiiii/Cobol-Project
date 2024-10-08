@@ -1,0 +1,61 @@
+     1	      IDENTIFICATION DIVISION.							26JAN24 19:44:52  PAGE	  1
+     2	      PROGRAM-ID. HELLOWORLD.
+     3
+     4	      PROCEDURE DIVISION.
+     5            DISPLAY "HELLO WORLD".
+     6            DISPLAY "ALEXANDER PORLARES".
+     7		  STOP RUN.Realia COBOL Version 4.000   SN: 01-07732  C:HELLO.COB					26JAN24 19:44:52  PAGE	  2
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        005C	 HELLOWORLD$C00
+			  D00	     06        00FE	 HELLOWORLD$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	       7
+			Compilation time (mm:ss.hh):  0:01.75
+			Compilation speed (lines/minute):   240
+
+			Compilation date (yy/mm/dd): 24/01/26
+			     Time of day (hh:mm:ss): 19:44:52
+
+			Source length in LST file:000000265

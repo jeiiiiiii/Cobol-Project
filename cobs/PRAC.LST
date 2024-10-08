@@ -1,0 +1,160 @@
+     1	      IDENTIFICATION DIVISION.							10FEB24 20:30:15  PAGE	  1
+     2	      PROGRAM-ID. friends.
+     3	     *AUTHOR. JEI.
+     4	     *INSTALLATION. TAYTAY.
+     5	     *DATE-WRITTEN. 01-26-2024.
+     6	     *DATE-COMPILED. 01-26-2024.
+     7	     *SECURITY. US ONLY.
+     8	     *REMARKS first cobol.
+     9
+    10	      ENVIRONMENT DIVISION.
+    11	      CONFIGURATION SECTION.
+    12	      SOURCE-COMPUTER. GIGABYTE.
+    13	      OBJECT-COMPUTER. GIGABYTE.
+    14	      INPUT-OUTPUT SECTION.
+    15	      FILE-CONTROL.
+    16            SELECT JEI ASSIGN TO "resultss".
+    17            SELECT OUTFILE ASSIGN TO "POPULATION".
+    18	      DATA DIVISION.
+    19	      FILE SECTION.
+    20	      FD  JEI
+    21		  LABEL RECORD IS STANDARD
+    22		  DATA RECORD IS INREC.
+    23	      01  INREC.
+    24		  02 LBC PIC 9(2).
+    25		  02 LLN PIC X(20).
+    26		  02 TNCO PIC 9(2).
+    27		  02 TNRF PIC 9(3).
+    28		  02 TNPTF PIC 9(3).
+    29		  02 TNES PIC 9(6).
+    30		  02 TNRS PIC 9(4).
+    31		  02 TNIS PIC 9(3).
+    32	      FD  OUTFILE
+    33		  LABEL RECORD IS OMITTED
+    34		  DATA RECORD IS OUTREC.
+    35	      01  OUTREC.
+    36		  02 FILLER PIC X(80).
+    37	      WORKING-STORAGE SECTION.
+    38	      01  EOFSW PIC 9 VALUE 0.
+    39	      01  BC PIC 9(2) VALUE 0.
+    40	      01  LN PIC X(20) VALUE SPACES.
+    41	      01  NCO PIC 9(2) VALUE 0.
+    42	      01  NRF PIC 9(3) VALUE 0.
+    43	      01  NPTF PIC 9(3) VALUE 0.
+    44	      01  NES PIC 9(6) VALUE 0.
+    45	      01  NRS PIC 9(4) VALUE 0.
+    46	      01  NIS PIC 9(3) VALUE 0.
+    47        01  ENO PIC X VALUE 'Y'.
+    48	      SCREEN SECTION.
+    49	      01  SCRE.
+    50		      02  BLANK SCREEN.
+    51	      PROCEDURE DIVISION.
+    52	      MAIN-RTN.
+    53		  OPEN OUTPUT JEI.
+    54		  PERFORM AKSEPT-RTN THRU  AKSEPT-RTN-END UNTIL EOFSW = 1.
+    55		  CLOSE JEI.
+    56		  STOP RUN.
+    57	      AKSEPT-RTN.
+    58		  DISPLAY SCRE.
+    59		  PERFORM BRANCH-CODE-RTN UNTIL BC > 0 AND BC < 7.
+    60            IF BC = '1' DISPLAY 'PUP MAIN'    61            IF BC = '2' DISPLAY 'PUP COMMONWEALTH'                                10FEB24 20:30:15  PAGE    2
+    62            IF BC = '3' DISPLAY 'PUP STA. ROSA'
+    63            IF BC = '4' DISPLAY 'PUP TAGUIG'
+    64            IF BC = '5' DISPLAY 'PUP BULACAN'
+    65            IF BC = '6' DISPLAY 'PUP SAN JUAN'.
+    66		  MOVE BC TO LBC.
+    67            DISPLAY 'TOTAL.NO OF COURSES OFFERED:' LINE 8 COLUMN 10.
+    68		  ACCEPT NCO LINE 8 COLUMN 40.
+    69		  MOVE NCO TO TNCO.
+    70            DISPLAY 'TOTAL.NO OF REGULAR FACULTY:' LINE 9 COLUMN 10.
+    71		  ACCEPT NRF LINE 9 COLUMN 40.
+    72		  MOVE NRF TO TNRF.
+    73            DISPLAY 'TOTAL.NO OF PART TIME FACULTY:' LINE 10 COLUMN 10.
+    74		  ACCEPT NPTF LINE 10 COLUMN 40.
+    75		  MOVE NPTF TO TNPTF.
+    76            DISPLAY 'TOTAL.NO OF ENROLLED STUDENTS:' LINE 11 COLUMN 10.
+    77		  ACCEPT NES LINE 11 COLUMN 40.
+    78		  MOVE NES TO TNES.
+    79            DISPLAY 'TOTAL.NO OF REGULAR STUDENTS:' LINE 12 COLUMN 10.
+    80		  ACCEPT NRS LINE 12 COLUMN 40.
+    81		  MOVE NRS TO TNRS.
+    82            DISPLAY 'TOTAL.NO OF IRREGULAR STUDENTS:' LINE 13 COLUMN 10.
+    83		  ACCEPT NIS LINE 13 COLUMN 40.
+    84		  MOVE NIS TO TNIS.
+    85            DISPLAY 'INPUT ANOTHER RECORD(Y/N)?:' LINE 14 COLUMN 10.
+    86		  ACCEPT ENO LINE 14 COLUMN 40
+    87            IF ENO = 'N' MOVE 1 TO EOFSW.
+    88	      AKSEPT-RTN-END.
+    89	      BRANCH-CODE-RTN.
+    90            DISPLAY 'LOCATION BRANCH CODE:' LINE 6 COLUMN 10.
+    91		  ACCEPT BC LINE 6 COLUMN 40.
+    92            IF BC = '1' DISPLAY 'PUP MAIN'
+    93		  ACCEPT BC LINE 6 COLUMN 40.
+    94            IF BC = '2' DISPLAY 'PUP COMMONWEALTH'
+    95		  ACCEPT BC LINE 6 COLUMN 40.
+    96            IF BC = '3' DISPLAY 'PUP STA. ROSA'
+    97		  ACCEPT BC LINE 6 COLUMN 40.
+    98            IF BC = '4' DISPLAY 'PUP TAGUIG'
+    99		  ACCEPT BC LINE 6 COLUMN 40.
+   100            IF BC = '5' DISPLAY 'PUP BULACAN'
+   101		  ACCEPT BC LINE 6 COLUMN 40.
+   102            IF BC = '6' DISPLAY 'PUP SAN JUAN'
+   103		  ACCEPT BC LINE 6 COLUMN 40.
+   104
+   105
+   106
+   107Realia COBOL Version 4.000   SN: 01-07732  C:PRAC.COB					10FEB24 20:30:15  PAGE	  3
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        08AE	 FRIENDS$C00
+			  D00	     06        03C7	 FRIENDS$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     107
+			Compilation time (mm:ss.hh):  0:02.47
+			Compilation speed (lines/minute):  2599
+
+			Compilation date (yy/mm/dd): 24/02/10
+			     Time of day (hh:mm:ss): 20:30:16
+
+			Source length in LST file:000004273

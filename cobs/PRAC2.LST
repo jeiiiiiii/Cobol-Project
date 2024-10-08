@@ -1,0 +1,168 @@
+     1	      IDENTIFICATION DIVISION.							11FEB24 20:43:20  PAGE	  1
+     2	      PROGRAM-ID. POPULATION-REPORT.
+     3	     *AUTHOR. jei
+     4	     *INSTALLATION. PUP-MANILA.
+     5	     *DATE-WRITTEN. 02/12/2024.
+     6	     *DATE-COMPILED. 02/12/2024.
+     7	     *SECURITY. BSIT22N ONLY.
+     8	     *REMARKS. PATAPOS PLS.
+     9	      ENVIRONMENT DIVISION.
+    10	      CONFIGURATION SECTION.
+    11	      SOURCE-COMPUTER. GIGABYTE.
+    12	      OBJECT-COMPUTER. GIGABYTE.
+    13	      INPUT-OUTPUT SECTION.
+    14	      FILE-CONTROL.
+    15             SELECT OUTFILE ASSIGN TO "JEI".
+    16	      DATA DIVISION.
+    17	      FILE SECTION.
+    18	      FD   OUTFILE
+    19		   LABEL RECORD IS STANDARD
+    20		   DATA RECORD IS OUTREC.
+    21	      01   OUTREC.
+    22		  02 D-SNO PIC X(10).
+    23		  02 D-SNA PIC X(25).
+    24		  02 D-ST PIC X(10).
+    25		  02 D-Y PIC 9.
+    26		  02 D-TAF PIC 9(5)V99.
+    27		  02 D-CC PIC 9.
+    28	      WORKING-STORAGE SECTION.
+    29	      01  EOFSW PIC 9 VALUE 0.
+    30	      01  ENO PIC X VALUE SPACES.
+    31	      01  SNO PIC 9(10) VALUE 0.
+    32	      01  SNA PIC X(25) VALUE SPACES.
+    33	      01  CC PIC 9 VALUE 0.
+    34	      01  CN PIC X(25) VALUE SPACES.
+    35	      01  Y PIC 9 VALUE 0.
+    36	      01  S PIC 9 VALUE 0.
+    37	      01  ST PIC X VALUE SPACES.
+    38	      01  STN PIC X(10) VALUE SPACES.
+    39	      01  TF PIC 9(4)V99 VALUE 0.
+    40	      01  SCF PIC 9(3)V99 VALUE 0.
+    41	      01  LF PIC 9(3)V99 VALUE 0.
+    42	      01  MF PIC 9(4)V99 VALUE 0.
+    43	      01  TAF PIC 9(5)V99 VALUE 0.
+    44	      SCREEN SECTION.
+    45	      01   SCRE.
+    46		   02 BLANK SCREEN.
+    47	      PROCEDURE DIVISION.
+    48	      MAIN-RTN.
+    49		   OPEN OUTPUT OUTFILE.
+    50		   PERFORM ACCEPT-RTN THRU ACCEPT-RTN-END UNTIL EOFSW = 1.
+    51		   CLOSE OUTFILE.
+    52		   STOP RUN.
+    53	      ACCEPT-RTN.
+    54		   DISPLAY SCRE.
+    55		   MOVE SPACES TO ENO.
+    56		   MOVE 0 TO CC.
+    57		   MOVE SPACES TO ST.
+    58             DISPLAY "POLYTECHNIC UNIVERSITY OF THE PHILIPPINES"
+    59		   LINE 1 COLUMN 19.
+    60             DISPLAY "STA. MESA, MANILA" LINE 2 COLUMN 31.    61             DISPLAY "STUDENT'S STATEMENT OF ACCOUNT" LINE 4 COLUMN 25.           11FEB24 20:43:20  PAGE    2
+    62             DISPLAY "STUDENT NO.:" LINE 5 COLUMN 3.
+    63		   ACCEPT SNO LINE 5 COLUMN 40.
+    64		   MOVE SNO TO D-SNO.
+    65             DISPLAY "STUDENT NAME:" LINE 6 COLUMN 3.
+    66		   ACCEPT SNA LINE 6 COLUMN 40.
+    67		   MOVE SNA TO D-SNA.
+    68		   PERFORM COURSE-RTN UNTIL CC > 0 AND CC < 7.
+    69		   MOVE CC TO D-CC.
+    70             DISPLAY "COURSE NAME:" LINE 8 COLUMN 3.
+    71		   DISPLAY CN LINE 8 COLUMN 40.
+    72             DISPLAY "YEAR:" LINE 9 COLUMN 3.
+    73		   ACCEPT Y LINE 9 COLUMN 40.
+    74		   MOVE Y TO D-Y.
+    75             DISPLAY "SECTION:" LINE 10 COLUMN 3.
+    76		   ACCEPT SNA LINE 10 COLUMN 40.
+    77            PERFORM STN-RTN UNTIL ST = 'R' OR ST = 'I' OR ST = 'r' OR
+    78             'i'.
+    79             DISPLAY "STUDENT TYPE NAME:" LINE 12 COLUMN 3.
+    80		   DISPLAY STN LINE 12 COLUMN 40.
+    81		   MOVE ST TO D-ST.
+    82             DISPLAY "TUITION FEE:" LINE 13 COLUMN 3.
+    83		   ACCEPT TF LINE 13 COLUMN 40.
+    84             DISPLAY "STUDENT COUNCIL FEE:" LINE 14 COLUMN 3.
+    85		   ACCEPT SCF LINE 14 COLUMN 40.
+    86             DISPLAY "LABORATORY FEE:" LINE 15 COLUMN 3.
+    87		   ACCEPT LF LINE 15 COLUMN 40.
+    88             DISPLAY "MISCELLANEOUS FEE:" LINE 16 COLUMN 3.
+    89		   ACCEPT MF LINE 16 COLUMN 40.
+    90		   PERFORM ANOTHER-RTN
+    91             UNTIL ENO = 'Y' OR  ENO = 'y'
+    92             OR  ENO = 'N' OR  ENO = 'n'.
+    93	      ACCEPT-RTN-END.
+    94	      COURSE-RTN.
+    95            DISPLAY "COURSE CODE:" LINE 7 COLUMN 3.
+    96		  ACCEPT CC LINE 7 COLUMN 40.
+    97             IF CC = 1 MOVE "ACCOUNTING" TO CN.
+    98             IF CC = 2 MOVE "ARTS" TO CN.
+    99             IF CC = 3 MOVE "BUSINESS" TO CN.
+   100             IF CC = 4 MOVE "COMSCIE" TO CN.
+   101             IF CC = 5 MOVE "EDUC" TO CN.
+   102             IF CC = 6 MOVE "ENG" TO CN.
+   103	      STN-RTN.
+   104             DISPLAY "STUDENT TYPE:" LINE 11 COLUMN 3.
+   105		   ACCEPT ST LINE 11 COLUMN 40.
+   106             IF ST = 'R' MOVE "REGULAR" TO STN.
+   107             IF ST = 'I' MOVE "IRREGULAR" TO STN.
+   108             IF ST = 'i' MOVE "IRREGULAR" TO STN.
+   109             IF ST = 'r' MOVE "REGULAR" TO STN.
+   110	      ANOTHER-RTN.
+   111             DISPLAY "INPUT ANOTHER RECORD (Y/N)?"
+   112		   LINE 18 COLUMN 25.
+   113		   ACCEPT ENO LINE 18 COLUMN 54.
+   114             IF ENO = 'N' OR 'n' MOVE 1 TO EOFSW.
+   115             IF ENO = 'Y' OR 'y' MOVE 0 TO EOFSW.Realia COBOL Version 4.000   SN: 01-07732  C:PRAC2.COB					11FEB24 20:43:20  PAGE	  3
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        0A82	 POPULATION$REPORT$C00
+			  D00	     06        039C	 POPULATION$REPORT$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     115
+			Compilation time (mm:ss.hh):  0:01.70
+			Compilation speed (lines/minute):  4058
+
+			Compilation date (yy/mm/dd): 24/02/11
+			     Time of day (hh:mm:ss): 20:43:21
+
+			Source length in LST file:000004893

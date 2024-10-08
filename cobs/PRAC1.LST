@@ -1,0 +1,182 @@
+     1	      IDENTIFICATION DIVISION.							12FEB24 08:56:03  PAGE	  1
+     2	      PROGRAM-ID. POPULATION-REPORT.
+     3	     *AUTHOR. jei
+     4	     *INSTALLATION. PUP-MANILA.
+     5	     *DATE-WRITTEN. 02/09/2024.
+     6	     *DATE-COMPILED. 02/09/2024.
+     7	     *SECURITY. BSIT22N ONLY.
+     8	     *REMARKS. PRACTICE SET.
+     9	      ENVIRONMENT DIVISION.
+    10	      CONFIGURATION SECTION.
+    11	      SOURCE-COMPUTER. LAPTOP-GUPS4DA8.
+    12	      OBJECT-COMPUTER. LAPTOP-GUPS4DA8.
+    13	      INPUT-OUTPUT SECTION.
+    14	      FILE-CONTROL.
+    15             SELECT DSP ASSIGN TO "FURAGGAN".
+    16	      DATA DIVISION.
+    17	      FILE SECTION.
+    18	      FD   DSP
+    19		   LABEL RECORD IS STANDARD
+    20		   DATA RECORD IS OUTREC.
+    21	      01   OUTREC.
+    22		   05 D-LNA PIC X(20).
+    23		   05 D-TCO PIC 9(2).
+    24		   05 D-TES PIC 9(6).
+    25		   05 D-TNF PIC 9(6).
+    26
+    27	      WORKING-STORAGE SECTION.
+    28	      01   EOFSW PIC 9 VALUE 0.
+    29	      01   ENO PIC X VALUE SPACES.
+    30	      01   LBC PIC 9(2) VALUE 0.
+    31	      01   LNA PIC X(20) VALUE SPACES.
+    32	      01   TCO PIC 9(2) VALUE 0.
+    33	      01   TRF PIC 9(3) VALUE 0.
+    34	      01   TPF PIC 9(3) VALUE 0.
+    35	      01   TNF PIC 9(6) VALUE 0.
+    36	      01   TES PIC 9(6) VALUE 0.
+    37	      01   TRS PIC 9(4) VALUE 0.
+    38	      01   TIS PIC 9(3) VALUE 0.
+    39	      01   SVTES PIC 9(6) VALUE 999999.
+    40	      01   SVTNF PIC 9(6) VALUE 999999.
+    41	      01   LES PIC ZZZZZ9.
+    42	      01   LNF PIC ZZZZZ9.
+    43	      01   LESBNA PIC X(20) VALUE SPACES.
+    44	      01   LNFBNA PIC X(20) VALUE SPACES.
+    45	      SCREEN SECTION.
+    46	      01   SCRE.
+    47		   02 BLANK SCREEN.
+    48	      PROCEDURE DIVISION.
+    49	      MAIN-RTN.
+    50		   OPEN OUTPUT DSP.
+    51		   PERFORM ACCEPT-RTN THRU ACCEPT-RTN-END UNTIL EOFSW = 1.
+    52		   PERFORM FINISH-RTN.
+    53		   CLOSE DSP.
+    54		   STOP RUN.
+    55	      ACCEPT-RTN.
+    56		   DISPLAY SCRE.
+    57		   MOVE SPACES TO ENO.
+    58		   MOVE 0 TO LBC.
+    59             DISPLAY "POLYTECHNIC UNIVERSITY OF THE PHILIPPINES"
+    60		   LINE 1 COLUMN 19.    61             DISPLAY "STA. MESA, MANILA" LINE 2 COLUMN 31.                        12FEB24 08:56:03  PAGE    2
+    62             DISPLAY "POPULATION REPORT" LINE 5 COLUMN 31.
+    63             DISPLAY "FIRST SEMESTER" LINE 6 COLUMN 32.
+    64             DISPLAY "2023-2024" LINE 7 COLUMN 35.
+    65		   PERFORM BRANCH-RTN UNTIL LBC > 0 AND LBC < 7.
+    66		   MOVE LNA TO D-LNA.
+    67             DISPLAY "LOCATION NAME:" LINE 10 COLUMN 3.
+    68		   DISPLAY LNA LINE 10 COLUMN 40.
+    69             DISPLAY "TOTAL NO. OF COURSES OFFERED:"
+    70		   LINE 11 COLUMN 3.
+    71		   ACCEPT TCO LINE 11 COLUMN 40.
+    72		   MOVE TCO TO D-TCO.
+    73             DISPLAY "TOTAL NO. OF REGULAR FACULTY:"
+    74		   LINE 12 COLUMN 3.
+    75		   ACCEPT TRF LINE 12 COLUMN 40.
+    76             DISPLAY "TOTAL NO. OF PART TIME FACULTY:"
+    77		   LINE 13 COLUMN 3.
+    78		   ACCEPT TPF LINE 13 COLUMN 40.
+    79		   PERFORM FACULTY-RTN.
+    80		   MOVE TNF TO D-TNF.
+    81		   IF TNF < SVTNF
+    82		   MOVE TNF TO SVTNF
+    83		   MOVE TNF TO LNF
+    84		   MOVE LNA TO LNFBNA.
+    85             DISPLAY "TOTAL NO. OF ENROLLED STUDENTS:"
+    86		   LINE 14 COLUMN 3.
+    87		   ACCEPT TES LINE 14 COLUMN 40.
+    88		   MOVE TES TO D-TES.
+    89		   IF TES < SVTES
+    90		   MOVE TES TO SVTES
+    91		   MOVE TES TO LES
+    92		   MOVE LNA TO LESBNA.
+    93             DISPLAY "TOTAL NO. OF REGULAR STUDENTS:"
+    94		   LINE 15 COLUMN 3.
+    95		   ACCEPT TRS LINE 15 COLUMN 40.
+    96             DISPLAY "TOTAL NO. OF IRREGULAR STUDENTS:"
+    97		   LINE 16 COLUMN 3.
+    98		   COMPUTE TIS = TES - TRS.
+    99		   DISPLAY TIS LINE 16 COLUMN 40.
+   100		   WRITE OUTREC.
+   101		   PERFORM ANOTHER-RTN
+   102             UNTIL ENO = 'Y' OR  ENO = 'y'
+   103             OR  ENO = 'N' OR  ENO = 'n'.
+   104	      ACCEPT-RTN-END.
+   105	      BRANCH-RTN.
+   106             DISPLAY "LOCATION BRANCH CODE:" LINE 9 COLUMN 3.
+   107		   ACCEPT LBC LINE 9 COLUMN 40.
+   108             IF LBC = 1 MOVE "PUP MAIN" TO LNA.
+   109             IF LBC = 2 MOVE "PUP COMMONWEALTH" TO LNA.
+   110             IF LBC = 3 MOVE "PUP STA. ROSA" TO LNA.
+   111             IF LBC = 4 MOVE "PUP TAGUIG" TO LNA.
+   112             IF LBC = 5 MOVE "PUP BULACAN" TO LNA.
+   113             IF LBC = 6 MOVE "PUP SAN JUAN" TO LNA.
+   114	      FACULTY-RTN.
+   115		   COMPUTE TNF = TRF + TPF.
+   116	      ANOTHER-RTN.
+   117             DISPLAY "INPUT ANOTHER RECORD (Y/N)?"
+   118		   LINE 18 COLUMN 25.
+   119		   ACCEPT ENO LINE 18 COLUMN 54.
+   120             IF ENO = 'N' OR 'n' MOVE 1 TO EOFSW.   121             IF ENO = 'Y' OR 'y' MOVE 0 TO EOFSW.                                 12FEB24 08:56:03  PAGE    3
+   122	      FINISH-RTN.
+   123             DISPLAY "LEAST NO. OF ENROLLED STUDENTS:" LINE 20 COLUMN 3.
+   124		   DISPLAY LES LINE 20 COLUMN 40.
+   125             DISPLAY "BRANCH NAME:" LINE 21 COLUMN 3.
+   126		   DISPLAY LESBNA LINE 21 COLUMN 40.
+   127             DISPLAY "LEAST NO. OF FACULTY:" LINE 23 COLUMN 3.
+   128		   DISPLAY LNF LINE 23 COLUMN 40.
+   129             DISPLAY "BRANCH NAME:" LINE 24 COLUMN 3.
+   130		   DISPLAY LNFBNA LINE 24 COLUMN 40.Realia COBOL Version 4.000   SN: 01-07732  C:PRAC1.COB					12FEB24 08:56:03  PAGE	  4
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        0BAB	 POPULATION$REPORT$C00
+			  D00	     06        0432	 POPULATION$REPORT$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     130
+			Compilation time (mm:ss.hh):  0:01.76
+			Compilation speed (lines/minute):  4431
+
+			Compilation date (yy/mm/dd): 24/02/12
+			     Time of day (hh:mm:ss): 08:56:04
+
+			Source length in LST file:000005474

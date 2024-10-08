@@ -1,0 +1,224 @@
+     1	      IDENTIFICATION DIVISION.							11FEB24 23:25:52  PAGE	  1
+     2	      PROGRAM-ID. PRACTICE-7.
+     3	     *AUTHOR. IT22N REIN FURAGGANAN.
+     4	     *INSTALLATION. PUP-MANILA.
+     5	     *DATE-WRITTEN. 02/11/24.
+     6	     *DATE-COMPILED. 02/11/24.
+     7	     *SECURITY. ONLY ME.
+     8	     *REMARKS. PRACTICE SET 3.
+     9	      ENVIRONMENT DIVISION.
+    10	      CONFIGURATION SECTION.
+    11	      SOURCE-COMPUTER. LAPTOP-GUPS4DA8.
+    12	      OBJECT-COMPUTER. LAPTOP-GUPS4DA8.
+    13	      INPUT-OUTPUT SECTION.
+    14	      FILE-CONTROL.
+    15             SELECT OUTFILE ASSIGN TO "12OUTPUT.TXT".
+    16	      DATA DIVISION.
+    17	      FILE SECTION.
+    18	      FD   OUTFILE
+    19		   LABEL RECORD IS OMITTED
+    20		   DATA RECORD IS OUTREC.
+    21	      01   OUTREC.
+    22		   02 FILLER PIC X(80).
+    23	      WORKING-STORAGE SECTION.
+    24	      01   EOFSW PIC 9 VALUE 0.
+    25	      01   ANO PIC X VALUE SPACES.
+    26	      01   ENO PIC 9(10) VALUE 0.
+    27	      01   ENA PIC X(25) VALUE SPACES.
+    28	      01   DOB PIC X(20) VALUE SPACES.
+    29	      01   UNC PIC 9 VALUE 0.
+    30	      01   UNA PIC X(5) VALUE SPACES.
+    31	      01   CRC PIC 9 VALUE 0.
+    32	      01   CNA PIC X(4) VALUE SPACES.
+    33	      01   TNI PIC 9(3) VALUE 0.
+    34	      01   TRS PIC 99 VALUE 0.
+    35	      01   DEC PIC 9V99 VALUE 0.
+    36	      01   RMK PIC X(6) VALUE SPACES.
+    37	      01   TNP PIC 99 VALUE 0.
+    38	      01   TNF PIC 99 VALUE 0.
+    39	      01   SUB-1.
+    40             02 FILLER PIC X(8) VALUE "EXAMINEE".
+    41		   02 FILLER PIC X(2) VALUE SPACES.
+    42             02 FILLER PIC X(8) VALUE "EXAMINEE".
+    43		   02 FILLER PIC X(17) VALUE SPACES.
+    44             02 FILLER PIC X(9) VALUE "BIRTHDATE".
+    45		   02 FILLER PIC X(11) VALUE SPACES.
+    46             02 FILLER PIC X(10) VALUE "UNIVERSITY".
+    47		   02 FILLER PIC X(1) VALUE SPACES.
+    48             02 FILLER PIC X(6) VALUE "COURSE".
+    49		   02 FILLER PIC X(1) VALUE SPACES.
+    50             02 FILLER PIC X(7) VALUE "REMARKS".
+    51	      01   SUB-2.
+    52             02 FILLER PIC X(6) VALUE "NUMBER".
+    53		   02 FILLER PIC X(4) VALUE SPACES.
+    54             02 FILLER PIC X(4) VALUE "NAME".
+    55		   02 FILLER PIC X(41) VALUE SPACES.
+    56             02 FILLER PIC X(4) VALUE "NAME".
+    57		   02 FILLER PIC X(7) VALUE SPACES.
+    58             02 FILLER PIC X(4) VALUE "NAME".
+    59		   02 FILLER PIC X(10) VALUE SPACES.
+    60	      01   DETAILS.    61		   02 P-ENO PIC 9(10).							11FEB24 23:25:52  PAGE	  2
+    62		   02 P-ENA PIC X(25).
+    63		   02 P-DOB PIC X(20).
+    64		   02 P-UNA PIC X(5).
+    65		   02 FILLER PIC X(6) VALUE SPACES.
+    66		   02 P-CNA PIC X(4).
+    67		   02 FILLER PIC X(3) VALUE SPACES.
+    68		   02 P-RMK PIC X(6).
+    69		   02 FILLER PIC X(1) VALUE SPACES.
+    70	      SCREEN SECTION.
+    71	      01   SCRE.
+    72		   02 BLANK SCREEN.
+    73	      PROCEDURE DIVISION.
+    74	      MAIN-RTN.
+    75		   OPEN OUTPUT OUTFILE.
+    76		   PERFORM HEADING-RTN.
+    77		   PERFORM ACCEPT-RTN THRU ACCEPT-RTN-END UNTIL EOFSW = 1.
+    78		   PERFORM FINISH-RTN.
+    79		   STOP RUN.
+    80	      HEADING-RTN.
+    81		   WRITE OUTREC FROM SUB-1 AFTER PAGE.
+    82		   WRITE OUTREC FROM SUB-2 AFTER 1.
+    83	      ACCEPT-RTN.
+    84		   DISPLAY SCRE.
+    85		   MOVE 0 TO UNC.
+    86		   MOVE 0 TO CRC.
+    87		   MOVE SPACES TO RMK.
+    88		   MOVE SPACES TO ANO.
+    89
+    90             DISPLAY "PROFESSIONAL REGULATION COMMISSION"
+    91		   LINE 1 COLUMN 1.
+    92             DISPLAY "IT PROFESSIONAL BOARD EXAM RESULT"
+    93		   LINE 2 COLUMN 1.
+    94
+    95             DISPLAY "EXAMINEE NUMBER:" LINE 4 COLUMN 1.
+    96		   ACCEPT ENO LINE 4 COLUMN 35.
+    97
+    98             DISPLAY "EXAMINEE NAME:" LINE 5 COLUMN 1.
+    99		   ACCEPT ENA LINE 5 COLUMN 35.
+   100
+   101             DISPLAY "DATE OF BIRTH:" LINE 6 COLUMN 1.
+   102		   ACCEPT DOB LINE 6 COLUMN 35.
+   103
+   104		   PERFORM UNI-RTN UNTIL UNC > 0 AND UNC < 6.
+   105             DISPLAY "UNIVERSITY NAME" LINE 8 COLUMN 1.
+   106		   DISPLAY UNA LINE 8 COLUMN 35.
+   107
+   108		   PERFORM CRC-RTN UNTIL CRC > 0 AND CRC < 4.
+   109             DISPLAY "COURSE NAME:" LINE 10 COLUMN 1.
+   110		   DISPLAY CNA LINE 10 COLUMN 35.
+   111
+   112             DISPLAY "TOTAL NO. OF ITEMS:" LINE 11 COLUMN 1.
+   113		   ACCEPT TNI LINE 11 COLUMN 35.
+   114
+   115		   PERFORM SCR-RTN.
+   116
+   117		   PERFORM RMK-RTN.
+   118             DISPLAY "REMARKS:" LINE 13 COLUMN 1.
+   119		   DISPLAY RMK LINE 13 COLUMN 35.
+   120   121		   MOVE ENO TO P-ENO.							11FEB24 23:25:52  PAGE	  3
+   122		   MOVE ENA TO P-ENA.
+   123		   MOVE DOB TO P-DOB.
+   124		   MOVE UNA TO P-UNA.
+   125		   MOVE CNA TO P-CNA.
+   126		   MOVE RMK TO P-RMK.
+   127		   WRITE OUTREC FROM DETAILS AFTER 1.
+   128
+   129             PERFORM ANOTHER-RTN UNTIL ANO = 'Y' OR ANO = 'y'
+   130             OR ANO = 'N' OR ANO = 'n'.
+   131	      ACCEPT-RTN-END.
+   132	      UNI-RTN.
+   133             DISPLAY "UNIVERSITY CODE:" LINE 7 COLUMN 1.
+   134		   ACCEPT UNC LINE 7 COLUMN 35.
+   135             IF UNC = 1 MOVE "UP" TO UNA.
+   136             IF UNC = 2 MOVE "PUP" TO UNA.
+   137             IF UNC = 3 MOVE "DLSU" TO UNA.
+   138             IF UNC = 4 MOVE "ADMU" TO UNA.
+   139             IF UNC = 5 MOVE "MAPUA" TO UNA.
+   140	      CRC-RTN.
+   141             DISPLAY "COURSE CODE:" LINE 9 COLUMN 1.
+   142		   ACCEPT CRC LINE 9 COLUMN 35.
+   143             IF CRC = 1 MOVE "BSIT" TO CNA.
+   144             IF CRC = 2 MOVE "BSCS" TO CNA.
+   145             IF CRC = 3 MOVE "BSIS" TO CNA.
+   146	      SCR-RTN.
+   147             DISPLAY "TEST RESULT (SCORE):" LINE 12 COLUMN 1.
+   148		   ACCEPT TRS LINE 12 COLUMN 35.
+   149	      RMK-RTN.
+   150		   COMPUTE DEC = TRS / TNI.
+   151		   IF (CRC = 1 AND DEC > 0.60)
+   152		   OR (CRC = 2 AND DEC > 0.70)
+   153		   OR (CRC = 3 AND DEC > 0.50)
+   154                  MOVE "PASSED" TO RMK
+   155			ADD 1 TO TNP
+   156		   ELSE
+   157                  MOVE "FAILED" TO RMK
+   158			ADD 1 TO TNF.
+   159	      ANOTHER-RTN.
+   160             DISPLAY "INPUT ANOTHER RECORD (Y/N)?"
+   161		   LINE 15 COLUMN 1.
+   162		   ACCEPT ANO LINE 15 COLUMN 35.
+   163             IF ANO = 'N' OR ANO = 'n' MOVE 1 TO EOFSW.
+   164	      FINISH-RTN.
+   165             DISPLAY "TOTAL NO. OF PASSED:" LINE 17 COLUMN 1.
+   166		   DISPLAY TNP LINE 17 COLUMN 35.
+   167             DISPLAY "TOTAL NO. OF FAILED:" LINE 18 COLUMN 1.
+   168		   DISPLAY TNF LINE 18 COLUMN 35.
+   169		   CLOSE OUTFILE.
+   170             DISPLAY "PROGRAM PROCESSED" LINE 20 COLUMN 31.
+   171
+   172Realia COBOL Version 4.000   SN: 01-07732  C:EXAM.COB					11FEB24 23:25:52  PAGE	  4
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        0B60	 PRACTICE$7$C00
+			  D00	     06        04AB	 PRACTICE$7$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	     172
+			Compilation time (mm:ss.hh):  0:01.87
+			Compilation speed (lines/minute):  5518
+
+			Compilation date (yy/mm/dd): 24/02/11
+			     Time of day (hh:mm:ss): 23:25:53
+
+			Source length in LST file:000006841

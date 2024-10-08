@@ -1,0 +1,128 @@
+     1	      IDENTIFICATION DIVISION.							10FEB24 17:38:13  PAGE	  1
+     2	      PROGRAM-ID.  TANGGAP.
+     3	      ENVIRONMENT DIVISION.
+     4	      CONFIGURATION SECTION.
+     5	      SOURCE-COMPUTER.	IBM.
+     6	      OBJECT-COMPUTER.	IBM.
+     7	      INPUT-OUTPUT SECTION.
+     8	      FILE-CONTROL.
+     9            SELECT VON  ASSIGN TO 'RENEE'.
+    10	      DATA DIVISION.
+    11	      FILE SECTION.
+    12	      FD  VON
+    13		  LABEL RECORD IS STANDARD
+    14		  DATA RECORD IS OUTREC.
+    15	      01  OUTREC.
+    16		  05  D-SNO PIC 9(5).
+    17		  05  D-SNA PIC X(25).
+    18		  05  D-COUR  PIC X(5).
+    19		  05  D-YEAR  PIC 9.
+    20		  05  D-SECT  PIC 9.
+    21		  05  D-GENDER PIC X.
+    22	      WORKING-STORAGE SECTION.
+    23	      01  EOFSW PIC 9 VALUE 0.
+    24	      01  SNO PIC 9(5) VALUE 0.
+    25	      01  SNA  PIC X(25)  VALUE SPACES.
+    26	      01  COURSE PIC X(5) VALUE SPACES.
+    27	      01  YEAR PIC 9 VALUE 0.
+    28	      01  SEKTION PIC 9 VALUE 0.
+    29	      01  GE PIC X VALUE SPACES.
+    30        01  ENO PIC X  VALUE 'Y'.
+    31	      SCREEN SECTION.
+    32	      01  SCRE.
+    33		      02  BLANK SCREEN.
+    34	      PROCEDURE DIVISION.
+    35	      MAIN-RTN.
+    36		  OPEN OUTPUT VON.
+    37		  PERFORM AKSEPT-RTN THRU  AKSEPT-RTN-END UNTIL EOFSW = 1.
+    38		  CLOSE VON.
+    39		  STOP RUN.
+    40	      AKSEPT-RTN.
+    41		  DISPLAY SCRE.
+    42            DISPLAY 'STUDENT INFORMATION:' LINE 7 COLUMN 20.
+    43            DISPLAY 'STUDENT NUMBER:' LINE 9 COLUMN 25.
+    44		  ACCEPT SNO LINE 9 COLUMN 40.
+    45		  MOVE SNO TO D-SNO.
+    46            DISPLAY 'STUDENT NAME;' LINE 10 COLUMN 25.
+    47		  ACCEPT SNA LINE 10 COLUMN 40.
+    48		      MOVE SNA TO D-SNA.
+    49            DISPLAY 'COURSE' LINE 11 COLUMN 25.
+    50		  ACCEPT COURSE LINE 11 COLUMN 40.
+    51		      MOVE COURSE TO D-COUR.
+    52            DISPLAY 'YEAR' LINE 12 COLUMN 25.
+    53		  ACCEPT YEAR LINE 12 COLUMN 40.
+    54		      MOVE YEAR TO D-YEAR.
+    55            DISPLAY 'SECTION' LINE 13 COLUMN 25.
+    56		  ACCEPT SEKTION LINE 13 COLUMN 40.
+    57		      MOVE SEKTION TO D-SECT.
+    58		      PERFORM GENDER-RTN
+    59            UNTIL GE = 'M' OR GE = 'm'
+    60            OR GE = 'F' OR GE = 'f'.    61		  MOVE GE TO D-GENDER							10FEB24 17:38:13  PAGE	  2
+    62            DISPLAY 'GENDER NAME' LINE 15 COLUMN 25
+    63		  WRITE OUTREC.
+    64		  MOVE SPACES TO GE
+    65            DISPLAY 'INPUT ANOTHER RECORD:' LINE 16 COLUMN 25.
+    66		  ACCEPT ENO LINE 16 COLUMN 50.
+    67            IF ENO = 'N' MOVE 1 TO EOFSW.
+    68	      AKSEPT-RTN-END.
+    69	      GENDER-RTN.
+    70                DISPLAY 'GENDER:' LINE 14 COLUMN 25.
+    71		  ACCEPT GE LINE 14 COLUMN 40.
+    72            IF GE = 'M' OR GE = 'm' DISPLAY 'MALE'
+    73		  LINE	 15 COLUMN 40.
+    74                IF GE = 'F' OR GE = 'f' DISPLAY 'FEMALE'
+    75		  LINE	 15 COLUMN 40.Realia COBOL Version 4.000   SN: 01-07732  C:AKSEP.COB					10FEB24 17:38:13  PAGE	  3
+
+
+
+				    Segment Table
+			Segment    Number     Length	    Name
+
+			  C00	     05        0656	 TANGGAP$C00
+			  D00	     06        0248	 TANGGAP$D00
+
+
+			Realia COBOL Compiler Version Information
+
+			      Pass 1	 Version 4.059
+			      Pass 1a	 Version 4.025
+			      Pass 2	 Version 4.059
+			      Pass 2a	 Version 4.024
+			      Pass 3	 Version 4.083
+			      Pass 4	 Version 4.028
+
+
+			Compilation Directives in Effect
+
+				    COMP-4
+				    NODCHK
+				      OPT
+				    NOCALL
+				    NOSUBCHK
+				      STRCHK
+				      ANSITRUNC
+				    NOSMALLCOMP
+				    NODCALL
+				    NODIVZERO
+				    NOEPDCALL
+				      APOST
+				      ASCII
+				      STATABORT
+				      MOVELINK
+				    NOBLL4K
+				      ARGCHK
+				      UPLOW
+				      WRITEAFTER
+				      SOSI
+				      DIALECT-REALIA4
+
+				    ERROR LEVEL LIMIT: W
+
+			Source lines compiled:	      75
+			Compilation time (mm:ss.hh):  0:01.87
+			Compilation speed (lines/minute):  2406
+
+			Compilation date (yy/mm/dd): 24/02/10
+			     Time of day (hh:mm:ss): 17:38:13
+
+			Source length in LST file:000002987
