@@ -1,4 +1,5 @@
-     1	      IDENTIFICATION DIVISION.							10FEB24 20:30:15  PAGE	  1
+
+     1	      IDENTIFICATION DIVISION.							10FEB24 20:30:15  PAGE	  1
      2	      PROGRAM-ID. friends.
      3	     *AUTHOR. JEI.
      4	     *INSTALLATION. TAYTAY.
@@ -57,7 +58,8 @@
     57	      AKSEPT-RTN.
     58		  DISPLAY SCRE.
     59		  PERFORM BRANCH-CODE-RTN UNTIL BC > 0 AND BC < 7.
-    60            IF BC = '1' DISPLAY 'PUP MAIN'    61            IF BC = '2' DISPLAY 'PUP COMMONWEALTH'                                10FEB24 20:30:15  PAGE    2
+    60            IF BC = '1' DISPLAY 'PUP MAIN'
+    61            IF BC = '2' DISPLAY 'PUP COMMONWEALTH'                                10FEB24 20:30:15  PAGE    2
     62            IF BC = '3' DISPLAY 'PUP STA. ROSA'
     63            IF BC = '4' DISPLAY 'PUP TAGUIG'
     64            IF BC = '5' DISPLAY 'PUP BULACAN'
@@ -99,11 +101,12 @@
    100            IF BC = '5' DISPLAY 'PUP BULACAN'
    101		  ACCEPT BC LINE 6 COLUMN 40.
    102            IF BC = '6' DISPLAY 'PUP SAN JUAN'
-   103		  ACCEPT BC LINE 6 COLUMN 40.
+   103		  ACCEPT BC LINE 6 COLUMN 40. 
    104
    105
    106
-   107Realia COBOL Version 4.000   SN: 01-07732  C:PRAC.COB					10FEB24 20:30:15  PAGE	  3
+   107
+Realia COBOL Version 4.000   SN: 01-07732  C:PRAC.COB					10FEB24 20:30:15  PAGE	  3
 
 
 
@@ -157,4 +160,5 @@
 			Compilation date (yy/mm/dd): 24/02/10
 			     Time of day (hh:mm:ss): 20:30:16
 
-			Source length in LST file:000004273
+			Source length in LST file:000004273
+
