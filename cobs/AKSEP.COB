@@ -73,3 +73,4 @@
            LINE   15 COLUMN 40.
 	       IF GE = 'F' OR GE = 'f' DISPLAY 'FEMALE'
            LINE   15 COLUMN 40.
+ 
