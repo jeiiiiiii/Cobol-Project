@@ -136,12 +136,3 @@
        FIN ISH-RTN.
            CLOSE INFILE, OUTFILE.
            DISPLAY "TAPOS NA" LINE 6 COLUMN 20.
-
-
-
-
-
-   
-
-
-   
