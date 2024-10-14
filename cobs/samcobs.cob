@@ -129,3 +129,4 @@
        FINISH-RTN.
            CLOSE STUDENT, OUTFILE.
            DISPLAY "We love ma'am alet" LINE 10 COLUMN 20.
+      
