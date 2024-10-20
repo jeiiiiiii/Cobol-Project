@@ -213,4 +213,5 @@ IDENTIFICATION DIVISION.
                 DISPLAY (22, 7) "TOTAL NUMBER OF TEMPO:", TRCTR-OUT.
                 DISPLAY (23, 7) "TOTAL NUMBER OF PART TIME:", PTCTR-OUT.
                 CLOSE OUTFILE.                                                                
-        FINISH-END. 
+        FINISH-END.
+
