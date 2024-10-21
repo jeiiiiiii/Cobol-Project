@@ -98,6 +98,7 @@
            ACCEPT BC LINE 6 COLUMN 40.
            IF BC = '6' DISPLAY 'PUP SAN JUAN'
            ACCEPT BC LINE 6 COLUMN 40.
+      
 
 
 
