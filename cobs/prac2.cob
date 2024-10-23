@@ -116,3 +116,4 @@
             ACCEPT ENO LINE 18 COLUMN 54.
             IF ENO = 'N' OR 'n' MOVE 1 TO EOFSW.
             IF ENO = 'Y' OR 'y' MOVE 0 TO EOFSW.
+
