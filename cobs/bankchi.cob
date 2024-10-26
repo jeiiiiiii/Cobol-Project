@@ -1,7 +1,5 @@
 
         Identification Division.
-
-        
         Program-ID. Problem3.
         Environment Division.
         Input-Output Section.
